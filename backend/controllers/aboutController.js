@@ -1,4 +1,4 @@
-import About from "../models/aboutModel.js";
+import About from "../models/About.js";
 
 const getAbout = async (req, res) => {
     try{
