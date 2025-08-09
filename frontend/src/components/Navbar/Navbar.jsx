@@ -52,13 +52,13 @@ const Navbar = () => {
     < motion.nav
             className={`navbar fixed top-0 w-full z-50 transition-all duration-300 ${
                 isScrolled
-                    ? 'bg-white/80 shadow-md backdrop-blur-md'
-                    : 'bg-transparent'
+                    ? 'bg-black/80 shadow-md backdrop-blur-md'
+                    : 'bg-transparent'  
             }`} >
-            <div className='flex items-center justify-between px-6 py-4 max-w-7xl mx-auto'>
-                <div className='text-xl font-bold text-primary'>Ayushi</div>
+            <div className='flex items-center justify-between max-w-7xl mx-auto px-8 py-4'>
+                <div className='text-2xl font-extrabold text-primary tracking-wide'>Ayushi</div>
 
-                <div className='hidden md:flex space-x-8 text-sm font-medium'>
+                <div className='hidden md:flex gap-10 text-base font-medium text-black'>
                     <a href="#home" className={`transition-colors ${activeSection === 'home' ? 'text-primary font-semibold underline': 'hover:text-primary'}`}>Home</a>
                     <a href="#About" className={`transition-colors ${activeSection === 'about' ? 'text-primary font-semibold underline': 'hover:text-primary'}`}>About</a>
                     <a href="#projects" className={`transition-colors ${activeSection === 'projects' ? 'text-primary font-semibold underline': 'hover:text-primary'}`}>Projects</a>
@@ -81,10 +81,10 @@ const Navbar = () => {
             { isMenuOpen && (
                 <motion.div
                 initial={{opacity:0 , x: 100}}
-                animate={{opactiy:1,x:0}}
+                animate={{opacity:1,x:0}}
                 exit ={{opacity:0,x: 100}}
                 transition={{duration:0.3}}
-                className='md:hidden bg-white shadow-md px-6 py-4 space-y-4'>
+                className='md:hidden bg-black shadow-md px-6 py-4 space-y-4'>
                 
                 <a href="#home" className = "block hover:text-primary">Home</a>
                 <a href="#about" className = "block hover:text-primary">About</a>
