@@ -22,6 +22,7 @@ const projectSchema = new Schema({
     liveLink:{
         type:String
     }
+    
 });
 
 const Project = model("Project", projectSchema);
