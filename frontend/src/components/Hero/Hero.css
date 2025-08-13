@@ -71,3 +71,14 @@
     .glass-card { border-radius: 18px; }
   }
   
+  .hero-circle {
+    will-change: transform;
+    animation: heroOrbit 16s linear infinite;
+  }
+  
+  @keyframes heroOrbit {
+    0%   { transform: scale(1) rotate(0deg); }
+    50%  { transform: scale(1.04) rotate(180deg); }
+    100% { transform: scale(1) rotate(360deg); }
+  }
+  

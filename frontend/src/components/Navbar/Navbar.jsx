@@ -88,7 +88,7 @@ export default function Navbar() {
                 {link.label}
               </button>
             ))}
-            <a href='/resume.pdf' target='_blank' rel='noopener noreferrer' className='gradient-resume-btn ml-2'>DownLoad Resume </a>
+            <a href='/resume.pdf' target='_blank' rel='noopener noreferrer' className='gradient-resume-btn ml-2'>Open Resume </a>
           </nav>
 
           {/* Mobile hamburger */}
@@ -123,7 +123,7 @@ export default function Navbar() {
                     {link.label}
                   </button>
                 ))}
-                <a href='/resume.pdf' target='_blank' rel='noopener noreferrer' className='mobile-resume-btn mt-2'>Download Resume</a>
+                <a href='/resume.pdf' target='_blank' rel='noopener noreferrer' className='mobile-resume-btn mt-2'>Open Resume</a>
               </nav>
             </motion.div>
           )}

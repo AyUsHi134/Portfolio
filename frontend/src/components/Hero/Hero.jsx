@@ -23,9 +23,10 @@ const Hero = () => {
     };
 
     return (
-        <section id="home"  className="scroll-mt-24 md:scroll-mt-28 hero-gradient min-h-[100vh]">
-            <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-32 md:py-40 grid md:grid-cols-2 gap-12 items-center justify-items-center ">
-                <motion.div className="space-y-8" variants={container} initial="hidden" animate="show">
+        <section id="home"  className="scroll-mt-24 md:scroll-mt-28 hero-gradient min-h-[100svh]">
+            <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-32 md:py-40 pb-10 md:pb-12 grid md:grid-cols-2 gap-12 items-center justify-items-center">
+                <motion.div variants={container} initial="hidden" animate="show">
+                    <div className='flex flex-col items-start gap-5 md:gap-7 max-w-[520px]'>
                     <motion.div className="glass-card p-7 md:p-10 rounded-2xl shadow-xl" variants={line}>
                         <p className="text-sm md:text-base text-gray-500 mb-2">Hello, I am </p>
 
@@ -41,10 +42,11 @@ const Hero = () => {
                         </h1>
                     </motion.div>
 
-                    <motion.div variants={line} className='flex flex-wrap gap-4'>
+                    <motion.div className='inline-flex gap-4'>
                         <a href='#contact' className='btn-primary' aria-label='Contact Ayushi'>Contact Me</a>
                         <a href='#projects' className='btn-secondary' aria-label='View Projects'>View Projects</a>
-                    </motion.div>
+                    </motion.div></div>
+
                 </motion.div>
                 <div className='relative h-[min(80vh,800px)] w-full max-w-[800px] flex justify-center items-end'> {/*container with circle and character*/}
                 <motion.div 
@@ -53,14 +55,14 @@ const Hero = () => {
                 transition={{duration:0.65, ease:'easeOut', delay: 0.05 }}
                 className='relative overflow-visible flex justify-center items-center'>
                     <motion.div 
-                    className='absolute z-0 bottom-0 left-1/2 transform -translate-x-1/2 pointer-events-none' //circle
+                    className='absolute z-0 bottom-0 left-1/2 transform -translate-x-1/2 pointer-events-none' //circle wrapper
                     animate={{scale:[1, 1.02, 1], y:[0, -4, 0]}}
                     transition={{duration: 10, ease:'easeInOut', repeat:Infinity}}
                     style={{willChange:'transform '}}>
                         <div 
-                        className='w-[60vw] md:w-[45vw] lg:w-[38vw] aspect-square rounded-full 
+                        className='hero-circle w-[48vw] md:w-[34vw] lg:w-[28vw] aspect-square rounded-full 
                         bg-white/25 border border-white/30
-                        blur-[1px]'/> {/*circle size */}
+                        blur-[1px]'/> {/*actual circle(size) */}
                     </motion.div> 
                     <motion.img src={heroImg} alt='Ayushi Character Img' 
                     className='relative z-10 w-[95%] md:w-[105%] lg:w-[115%] max-w-[720px] drop-shadow-xl' // character size 
