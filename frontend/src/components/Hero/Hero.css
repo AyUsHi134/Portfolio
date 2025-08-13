@@ -1,5 +1,6 @@
 .hero-gradient {
-    background: linear-gradient(135deg, #e5eff7 0%, #dfe9f3 40%, #d2e3f2 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+   
   }
   
   /* match JSX: className="glass-card" */
