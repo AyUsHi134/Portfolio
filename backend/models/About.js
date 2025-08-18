@@ -5,22 +5,15 @@ const aboutSchema = new Schema({
     heading:{
         type: String,
         required: true,
+        trim: true
     },
     description:{
         type:String,
         required:true,
-    },
-    buttons:[
-        {
-            label:{type:String},
-            url:{type:String},
-        },
-        {
-            label:{type:String},
-            url:{type:String},
-        }
-    ]
-});
+        trim: true
+    }
+    
+}, );
 
 const About = model("About", aboutSchema);
 

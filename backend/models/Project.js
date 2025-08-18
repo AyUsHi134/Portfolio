@@ -9,12 +9,13 @@ const projectSchema = new Schema({
         type:String,
         required:true
     },
-    Tech:{
+    tech:{
         type:String,
         required:true
     },
-    image:{
-        type:String
+    imageUrl:{
+        type:String,
+        required:true
     },
     githubLink:{
         type:String
