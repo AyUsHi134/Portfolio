@@ -258,7 +258,7 @@ const Projects = () => {
           <div className="cards-spacing"></div>
 
           {/* Projects Grid */}
-          <Motion className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          <Motion className="grid grid-cols-1 gap-10 mt-8">
             {filteredProjects.map((project, index) => {
               const id = project._id || index;
               const isCollapsed = collapsedCards.has(id);
@@ -267,74 +267,73 @@ const Projects = () => {
                 <div
                   key={id}
                   data-card-id={id}
-                  onClick={() => toggleCard(id)}
-                  className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 cursor-pointer hover-lift relative"
+                  className="project-card group relative overflow-hidden rounded-3xl border border-white/5 bg-[#0b0f19] shadow-[0_10px_40px_rgba(0,0,0,0.35)]   "
                 >
                   {/* Image */}
-                  <div className="relative overflow-hidden h-48 bg-gray-700">
+                  <div className="relative h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden">
                     <img
                       src={
                         new URL(
-                          `../../assets/projects/${project.imageUrl}`,
+                          `../../assets/${project.imageUrl}`,
                           import.meta.url
                         ).href
                       }
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      className="project-img absolute inset-0 w-full h-full object-cover transition-transform duration-[550ms]"
                       loading="lazy"
                       onError={(e) => {
-                        e.target.style.display = "none";
-                        if (e.target.nextSibling) {
-                          e.target.nextSibling.style.display = "flex";
+                        e.currentTarget.style.display = "none";
+                        if (e.currentTarget.nextElementSibling) {
+                            e.currentTarget.nextElementSibling.classList.remove("hidden");
                         }
                       }}
                     />
                     {/* Fallback placeholder */}
                     <div
-                      className="w-full h-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg"
-                      style={{ display: "none" }}
-                    >
+                      className="absolute inset-0 hidden bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white/90 text-3xl font-extrabold tracking-wide">
                       {project.title
                         .split(" ")
-                        .map((word) => word[0])
+                        .map((w) => w[0])
                         .join("")
                         .toUpperCase()}
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
-                  </div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0b0f19]/95 via-[#0b0f19]/80 to-transparent"></div>
 
-                  {/* Content */}
-                  <AnimatePresence>
-                    {!isCollapsed && (
-                      <div className="card-enter overflow-hidden">
-                        <div className="p-6">
-                          <div className="mb-3">
-                            <span className="inline-block px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
-                              {project.tech}
-                            </span>
-                          </div>
-                          <h3 className="text-xl font-bold text-white mb-3 hover:text-purple-400 transition-colors duration-300">
-                            {project.title}
-                          </h3>
-                          <p className="text-gray-300 text-sm leading-relaxed">
-                            {project.description}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </AnimatePresence>
+                    <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-center"> 
+                    <span className="text-sm font-semibold text-rose-400">
+                        {project.category}
+                    </span>
 
-                  {/* Collapsed */}
-                  {isCollapsed && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent p-4">
-                      <h3 className="text-lg font-bold text-white">
+                    <h3 className="mt-3 text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-tight max-w-2xl">
                         {project.title}
-                      </h3>
-                      <span className="inline-block px-2 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mt-2">
-                        {project.tech}
-                      </span>
+                    </h3>
+                    
+                    <h3 className="mt-3 text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-tight max-w-2xl">
+                        {project.title}
+                    </h3>
+
+                    <div className="mt-6 flex gap-3">
+                        {project.githubLink && (
+                            <a 
+                            href={project.githubLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-cta">
+                                GitHub </a>
+                        )}
+                        
+                        {project.liveLink && (
+                            <a
+                            href={project.liveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-cta btn-outline">
+                                Live Demo </a>
+                        )}
                     </div>
-                  )}
+                    </div>
+                  </div>
+        
                 </div>
               );
             })}
