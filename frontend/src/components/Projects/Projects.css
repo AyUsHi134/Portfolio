@@ -1,0 +1,13 @@
+/* Projects.css */
+#projects h2 {
+    letter-spacing: -0.5px;
+  }
+  
+  #projects .shadow-md {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  #projects .shadow-md:hover {
+    transform: translateY(-4px);
+  }
+  

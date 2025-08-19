@@ -1,234 +1,348 @@
-import React, {useState, useEffect} from 'react';
-import {motion, AnimatePresence, hover} from 'framer-motion';
+import React, { useState, useEffect } from "react";
 
 const Projects = () => {
-    const [collapseCards, setCollapsedCards] = useState(new Set());
-    const [stickyCards, setStickyCards] = useState(new Set());
-    const [projectsData, setProjectsData] = useState([]);
+  const [projectsData, setProjectsData] = useState([]);
+  const [collapsedCards, setCollapsedCards] = useState(new Set());
+  const [filter, setFilter] = useState("All");
+  const [categories, setCategories] = useState([]);
 
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try{
-                const res = await fetch("http://localhost:5000/api/projects");
-                const data = await res.json();
-                setProjectsData(data);
-            } catch(error) {
-                console.error("Error fetching projects:", error);
-            }
-        };
-        fetchProjects(); 
-}, []);
+  // 🔹 Filtering - connects to backend data
+  const filteredProjects =
+    filter === "All"
+      ? projectsData
+      : projectsData.filter((p) => p.category === filter);
 
-useEffect(() => {
-    const observerOptions = {
-        root:null,
-        rootMargin: '-10% 0px -80% 0px',
-        threshold: [0.1, 0.9]
+  // 🔹 Fetch projects from backend
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/projects");
+        const data = await res.json();
+        setProjectsData(data);
+
+        // 🔥 Set categories for filtering - 5 buttons with exact labels
+        setCategories(["All", "Web Apps", "Frontend", "Backend", "FullStack"]);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  // Scroll-based collapse
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const newCollapsedCards = new Set();
+
+      projectsData.forEach((project, index) => {
+        const cardElement = document.querySelector(
+          `[data-card-id="${project._id || index}"]`
+        );
+        if (cardElement) {
+          const cardRect = cardElement.getBoundingClientRect();
+          const cardTop = scrollY + cardRect.top;
+          if (scrollY > cardTop + 200) {
+            newCollapsedCards.add(project._id || index);
+          }
+        }
+      });
+
+      setCollapsedCards(newCollapsedCards);
     };
 
-    const observer = new IntersectionObserver((enteries) => {
-        setCollapsedCards(prevCollapsed => {
-            const newCollapsed = new Set(prevCollapsed);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
 
-            enteries.forEach(entry => {
-                const cardId = parseInt(entry.target.getAttribute('data-card-id'));
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [projectsData]);
 
-                if(entry.isIntersecting && entry.intersectionRatio > 0.3) {
-                    newCollapsed.delete(cardId);
-                } else if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
-                    newCollapsed.add(cardId);
-                }
-            });
-
-            return newCollapsed;
-        });
-
-        setStickyCards(() => {
-            const newSticky = new Set();
-            enteries.forEach(entry => {
-                const cardId = parseInt(entry.target.getAttribute('data-card-id'));
-                if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
-                    newSticky.add(cardId);
-                }
-            });
-
-            return newSticky;
-        });
-    }, observerOptions);
-
-    return () => {
-        document.querySelectorAll('[data-card-id]').forEach(card => observer.unobserve(card));
-      };
-}, [projectsData]);
-
-const toggleCard = (projectId) => {
-    setCollapsedCards(prevCollpased => {
-        const newCollapsed =  new Set(prevCollpased);
-        if(newCollapsed.has(projectId)) {
-            newCollapsed.delete(projectId);
-        } else {
-            newCollapsed.add(projectId);
-        }
-
-        return newCollapsed;
+  // Toggle cards manually
+  const toggleCard = (projectId) => {
+    setCollapsedCards((prev) => {
+      const newCollapsed = new Set(prev);
+      if (newCollapsed.has(projectId)) {
+        newCollapsed.delete(projectId);
+      } else {
+        newCollapsed.add(projectId);
+      }
+      return newCollapsed;
     });
-    };
+  };
 
-    const containerVariants = {
-        hidden: {opacity: 0},
-        visible: {
-            opacity: 1,
-            transition: {staggerChildren: 0.2, delayChildren: 0.1}
+  // Mock framer-motion components with CSS animations
+  const Motion = ({ children, className, ...props }) => (
+    <div className={`${className} animate-fadeInUp`} {...props}>
+      {children}
+    </div>
+  );
+
+  const AnimatePresence = ({ children }) => <>{children}</>;
+
+  return (
+    <>
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-    };
+        
+        .animate-fadeInUp {
+          animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .hover-lift:hover {
+          transform: translateY(-10px);
+          transition: transform 0.3s ease-in-out;
+        }
+        
+        .hover-scale:hover {
+          transform: scale(1.1);
+          transition: transform 0.5s ease-in-out;
+        }
+        
+        .gradient-text {
+          background: linear-gradient(135deg, #60a5fa, #a855f7, #ec4899);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        .card-enter {
+          animation: cardEnter 0.4s ease-in-out;
+        }
+        
+        .card-exit {
+          animation: cardExit 0.4s ease-in-out;
+        }
+        
+        @keyframes cardEnter {
+          from { height: 0; opacity: 0; }
+          to { height: auto; opacity: 1; }
+        }
+        
+        @keyframes cardExit {
+          from { height: auto; opacity: 1; }
+          to { height: 0; opacity: 0; }
+        }
 
-    const cardVariants = {
-        hidden: {opacity:0, y:50, scale:0.95},
-        visible: {opacity: 1, y:0, scale:1, transition: {duration:0.6, ease: "easeOut"}},
-        hover: {y: -10, scale:1.02, transition: {duration:0.3, ease:"easeOut"}},
-    };
+        /* Custom filter button styles matching SS1 */
+        .filter-btn {
+          background: rgba(55, 65, 81, 0.8) !important;
+          backdrop-filter: blur(12px) !important;
+          border: 1px solid rgba(75, 85, 99, 0.3) !important;
+          color: #9ca3af !important;
+          transition: all 0.3s ease !important;
+          border-radius: 30px !important;
+          padding: 8px 24px !important;
+          font-weight: 500 !important;
+          font-size: 13px !important;
+          min-width: fit-content !important;
+          white-space: nowrap !important;
+        }
+        
+        .filter-btn:hover {
+          background: rgba(75, 85, 99, 0.9) !important;
+          color: #e5e7eb !important;
+          transform: translateY(-1px) !important;
+          border-color: rgba(107, 114, 128, 0.5) !important;
+        }
+        
+        .filter-btn.active {
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+          color: white !important;
+          border: 1px solid rgba(139, 92, 246, 0.4) !important;
+          box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+        }
 
-    return (
-        <section id="Projects" className="min-h-screen bg-gray-900 pt-28 pb-28 px-4 sm:px-6 lg:px-8">
-            <div className='max-w-7xl mx-auto'>
-                <motion.div 
-                initial= {{opacity: 0, y: -30}}
-                whileInview= {{opacity: 1, y:0}}
-                viewport= {{once: true}}
-                transition= {{duration: 0.8}}
-                className='text-center mb-16'>
-                    <h2 className='text-4xl md:text-5xl lg:text-6xl font-bold'>
-                        <span className='bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent'>
-                            My Works 
-                        </span>
-                    </h2>
+        /* Perfect centering for heading */
+        .projects-heading {
+          font-size: 3rem !important;
+          font-weight: 700 !important;
+          color: white !important;
+          margin-bottom: 1.5rem !important;
+          text-align: center !important;
+          width: 100% !important;
+          display: block !important;
+        }
 
-                    <motion.div 
-                    initial= {{width: 0}}
-                    whileInView= {{width: "100px"}}
-                    viewport= {{once: true}}
-                    transition= {{duration: 0.8, delay: 0.3}}
-                    className='h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto mt-6 rounded-full'
-                    ></motion.div>
-                </motion.div>
-                
-                <div className='fixed top-20 left-0 right-0 z-40 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700/50'>
-                { Array.from(stickyCards)
-                .sort((a,b) => a-b)
-                .map(cardId => {
-                    const project = projectsData.find(p => p.id === cardId || p.id === cardId);
-                    if(!project) return null ;
-                    
-                    return (
-                        <motion.div 
-                        key={'sticky ${cardId}'}
-                        initial= {{opacity: 0, y: -20}}
-                        animate= {{opacity: 1, y: 0}}
-                        exit= {{opacity: 0, y: -20}}
-                        className='flex items-center px-6 py-3 border-b border-gray-700/30 hover:bg-gray-800/50 cursor-pointer'
-                        onClick={() => {
-                            const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-                            if (cardElement) {
-                                cardElement.scrollIntoView({ behaviout: 'smooth', block: 'center'});
-                            }
-                        }}>
-                            <div className='flex space-x-2 mr-4'>
-                                <div className='w-3 h-3 bg-red-500 rounded-full'></div>
-                                <div className='w-3 h-3 bg-yellow-500 rounded-full'></div>
-                                <div className='w-3 h-3 bg-green-500 rounded-full'></div>
-                            </div>
-                            <h4 className='text-green-400 font-semibold text-sm'>{project.title}</h4>
-                            <span className='ml-auto px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded'>
-                            {project.tech} </span>
-                        </motion.div>
-                        );
-                })} 
-            </div>
+        @media (min-width: 768px) {
+          .projects-heading {
+            font-size: 3.75rem !important;
+          }
+        }
 
-            <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8'>
-                
-                {projectsData.map((project, index) => {
-                    const isCollapsed = collapseCards.has(project.id || project.id);
+        /* Perfect centering for underline */
+        .projects-underline {
+          height: 4px !important;
+          background: linear-gradient(to right, #60a5fa, #a855f7, #ec4899) !important;
+          margin: 0 auto !important;
+          border-radius: 9999px !important;
+          width: 6rem !important;
+          margin-bottom: 3rem !important;
+          display: block !important;
+        }
 
-                    return(
-                        <motion.div 
-                        key={project._id || project.id || index}
-                        data-card-id={project._id || project.id || index}
-                        variants={cardVariants}
-                        whileHover="hover"
-                        onClick={() => toggleCard(project._id || project.id || index)}
-                        className='bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700/50
-                        hover:border-purple-500/50 transition-all duration-300 cursor-pointer relative'>
-                            <div className='relative overflow-hidden h-48 bg-gray-700'>
-                                <img
-                                src={new URL(`../../assets/${project.imageUrl}`, import.meta.url).href}
-                                alt={project.title}
-                                className='w-full h-full object-cover transition-transform duration-500 hover:scale-110'
-                                loading="lazy" />
-                                <div className='absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent'></div>
-                            </div>
+        /* Perfect centering for button container */
+        .button-container {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          gap: 12px !important;
+          flex-wrap: wrap !important;
+          margin-bottom: 3rem !important;
+          width: 100% !important;
+        }
 
-                            <AnimatePresence>
-                                {!isCollapsed && (
-                                    <motion.div
-                                    initial={{ height: 0, opacity: 0}}
-                                    animate={{ height: "auto", opacity: 1}}
-                                    exit={{ height:0, opacity:0}}
-                                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                                    className='overflow-hidden'>
-                                        <div className='p-6'>
-                                            <div className='mb-3'>
-                                                <span className='inline-block px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full'>
-                                                    {project.tech}
-                                                </span>
-                                            </div>
-                                            <h3 className='text-xl font-bold text-white mb-3 hover:text-purple-400 transition-colors duration-300'>
-                                                {project.title} 
-                                            </h3>
-                                            <p className='text-gray-300 text-sm leading-relaxed'>{project.description}</p>
+        .projects-section {
+          padding-top: 0 !important;
+          padding-bottom: 5rem !important;
+        }
 
-                                            <div className='flex space-x-3 mt-4'>
-                                                {project.githubLink && ( 
-                                                    <a href={project.githubLink}
-                                                    target='_blank'
-                                                    rel='noopener noreferrer'
-                                                    className='px-3 py-1 text-sm font-medium text-white bg-gray-700 rounded hover:bg-gray-600 transition'
-                                                    > GitHub</a> 
-                                                )}
-                                                {project.liveLink && (
-                                                    <a href={project.liveLink}
-                                                    target='_blank'
-                                                    rel='noopener noreferrer'
-                                                    className='px-3 py-1 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded hover:opacity-90 transition'>
-                                                        Live Demo
-                                                    </a>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+        .section-spacing {
+          height: 8rem !important;
+          background-color: #111827 !important;
+        }
 
-                            {isCollapsed && (
-                                <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent p-4'>
-                                    <h3 className='text-lg font-bold text-white'>{project.title}</h3>
-                                    <span className='inline-block px-2 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mt-2'>
-                                        {project.tech}</span>  
-                                </div>
-                            )}
-                        </motion.div>
-                    );
-                })}
-            </motion.div>
+        /* Container centering */
+        .projects-container {
+          max-width: 80rem !important;
+          margin: 0 auto !important;
+          text-align: center !important;
+        }
 
-                </div>  
-        </section>
-    );
+        /* Spacing between buttons and cards */
+        .cards-spacing {
+          height: 2rem !important;
+        }
+      `}</style>
+      
+      {/* Spacing section between about and projects */}
+      <div className="section-spacing"></div>
+      
+      <section
+        id="projects"
+        className="projects-section min-h-screen bg-gray-900 px-4 sm:px-6 lg:px-8"
+      >
+        <div className="projects-container">
+          {/* Section Header - perfectly centered */}
+          <Motion className="text-center">
+            <h2 className="projects-heading">
+              My Works
+            </h2>
+            <div className="projects-underline"></div>
+          </Motion>
+
+          {/* Filter Buttons - perfectly centered */}
+          <div className="button-container">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`filter-btn ${
+                  filter === cat ? 'active' : ''
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Spacing between buttons and project cards */}
+          <div className="cards-spacing"></div>
+
+          {/* Projects Grid */}
+          <Motion className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            {filteredProjects.map((project, index) => {
+              const id = project._id || index;
+              const isCollapsed = collapsedCards.has(id);
+
+              return (
+                <div
+                  key={id}
+                  data-card-id={id}
+                  onClick={() => toggleCard(id)}
+                  className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 cursor-pointer hover-lift relative"
+                >
+                  {/* Image */}
+                  <div className="relative overflow-hidden h-48 bg-gray-700">
+                    <img
+                      src={
+                        new URL(
+                          `../../assets/projects/${project.imageUrl}`,
+                          import.meta.url
+                        ).href
+                      }
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        if (e.target.nextSibling) {
+                          e.target.nextSibling.style.display = "flex";
+                        }
+                      }}
+                    />
+                    {/* Fallback placeholder */}
+                    <div
+                      className="w-full h-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg"
+                      style={{ display: "none" }}
+                    >
+                      {project.title
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")
+                        .toUpperCase()}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                  </div>
+
+                  {/* Content */}
+                  <AnimatePresence>
+                    {!isCollapsed && (
+                      <div className="card-enter overflow-hidden">
+                        <div className="p-6">
+                          <div className="mb-3">
+                            <span className="inline-block px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
+                              {project.tech}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-bold text-white mb-3 hover:text-purple-400 transition-colors duration-300">
+                            {project.title}
+                          </h3>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            {project.description}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Collapsed */}
+                  {isCollapsed && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent p-4">
+                      <h3 className="text-lg font-bold text-white">
+                        {project.title}
+                      </h3>
+                      <span className="inline-block px-2 py-1 text-xs font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mt-2">
+                        {project.tech}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </Motion>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default Projects;
