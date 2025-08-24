@@ -1,13 +1,168 @@
-/* Projects.css */
-#projects h2 {
-    letter-spacing: -0.5px;
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeInUp { animation: fadeInUp .6s ease-out; }
+
+@keyframes cardEnter {
+  from { height: 0; opacity: 0; }
+  to   { height: auto; opacity: 1; }
+}
+@keyframes cardExit {
+  from { height: auto; opacity: 1; }
+  to   { height: 0; opacity: 0; }
+}
+.card-enter { animation: cardEnter .4s ease-in-out; }
+.card-exit  { animation: cardExit  .4s ease-in-out; }
+
+/* ===== Small helpers ===== */
+.hover-lift:hover  { transform: translateY(-10px); transition: transform .3s ease-in-out; }
+.hover-scale:hover { transform: scale(1.1);        transition: transform .5s ease-in-out; }
+
+.gradient-text{
+  background: linear-gradient(135deg,#60a5fa,#a855f7,#ec4899);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* ===== Section layout ===== */
+.projects-heading{
+  font-size: 3rem !important; font-weight:700 !important; color:#fff !important;
+  margin-bottom:1.5rem !important; text-align:center !important; width:100% !important; display:block !important;
+}
+@media (min-width:768px){
+  .projects-heading{ font-size:3.75rem !important; }
+}
+
+.projects-underline{
+  height:4px !important; width:6rem !important; margin:0 auto 3rem !important; border-radius:9999px !important;
+  background:linear-gradient(to right,#60a5fa,#a855f7,#ec4899) !important; display:block !important;
+}
+
+.button-container{
+  display:flex !important; justify-content:center !important; align-items:center !important;
+  gap:12px !important; flex-wrap:wrap !important; margin-bottom:3rem !important; width:100% !important;
+}
+
+.projects-section{ padding-top:0 !important; padding-bottom:5rem !important; }
+.section-spacing{ height:8rem !important; background-color:#111827 !important; }
+.projects-container{ max-width:80rem !important; margin:0 auto !important; text-align:center !important; }
+.cards-spacing{ height:2rem !important; }
+
+/* ===== Filter buttons ===== */
+.filter-btn{
+  display:inline-flex; align-items:center;
+  width:max-content;
+  background:rgba(55,65,81,.8);
+  border:1px solid rgba(75,85,99,.3);
+  color:#9ca3af;
+  transition:all .3s ease;
+  border-radius:30px; padding:8px 24px; font-weight:500; font-size:13px;
+  white-space:nowrap;
+}
+.filter-btn:hover{
+  background:rgba(75,85,99,.9); color:#e5e7eb; transform:translateY(-1px);
+  border-color:rgba(107,114,128,.5);
+}
+.filter-btn.active{
+  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+  color:#fff; border:1px solid rgba(139,92,246,.4);
+  box-shadow:0 4px 15px rgba(59,130,246,.3);
+}
+
+/* Backdrop blur (no linter errors) */
+@supports ((-webkit-backdrop-filter: blur(0)) or (backdrop-filter: blur(0))) {
+  .filter-btn{
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
-  
-  #projects .shadow-md {
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* ===== Project card + image ===== */
+.project-card{
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid rgba(255,255,255,.05) !important;
+  background: #0b0f19 !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Responsive card heights */
+@media (max-width: 767px) {
+  .project-card .relative.h-\[260px\] {
+    height: 280px !important;
   }
-  
-  #projects .shadow-md:hover {
-    transform: translateY(-4px);
+}
+
+@media (min-width: 768px) {
+  .project-card .relative.h-\[260px\] {
+    height: 320px !important;
   }
-  
+}
+.project-img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  transition: transform 550ms ease;
+}
+/* You can also have Tailwind's group-hover:scale-110 in JSX */
+.project-card:hover .project-img{ transform: scale(1.06); }
+
+/* ===== Hover icons (GitHub / Live) ===== */
+.actions{
+  display:flex; gap:.75rem; margin-top:1.25rem;
+  opacity:0; transform:translateY(4px); pointer-events:none; transition:all .25s ease;
+}
+.project-card:hover .actions{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+.icon-btn{
+  width:44px; height:44px; display:flex; align-items:center; justify-content:center;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(17,24,39,.55);
+  color:#fff; transition:all .25s ease;
+}
+.icon-btn:hover{
+  transform:translateY(-2px);
+  border-color: rgba(168,85,247,.5);
+  box-shadow:0 8px 20px rgba(59,130,246,.25);
+}
+.icon-btn svg{ pointer-events:none; }
+
+/* Backdrop blur for icon buttons */
+@supports ((-webkit-backdrop-filter: blur(0)) or (backdrop-filter: blur(0))) {
+  .icon-btn{
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+}
+
+
+/* ===== Force perfect centering - ADD AT END OF FILE ===== */
+.projects-section .grid.grid-cols-1.md\:grid-cols-2 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  gap: 2rem !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+@media (min-width: 768px) {
+  .projects-section .grid.grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* ===== Force equal card width ===== */
+.projects-section .project-card {
+  width: 100% !important;
+  max-width:  100% !important;
+  margin: 0 !important;
+}
