@@ -73,7 +73,7 @@
             <span>Where </span>
             <AccentWord>artistry</AccentWord>
             <span> meets</span>
-            <br /> {/* always break so it's exactly 3 words per line */}
+            <br />
             <AccentWord>strategy</AccentWord>
             <span> for </span>
             <AccentWord>success</AccentWord>
