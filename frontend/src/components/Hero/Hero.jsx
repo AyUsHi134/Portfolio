@@ -1,74 +1,81 @@
-import  {motion} from 'framer-motion';
-import "./Hero.css";
-import heroImg from "../../assets/character.png";
+import React from 'react';
+import Typewriter from 'typewriter-effect';
+import Tilt from 'react-parallax-tilt';
+import profileImage from '../../assets/Character.png';
+import resumePDF from '../../assets/resume.pdf';
 
+const About = () => {
+  return (
+    <section
+      id="hero"
+      className="py-4 px-[7vw] md:px-[7vw] lg:px-[20vw] font-sans mt-16 md:mt-24 lg:mt-32"
+    >
+      <div className="flex flex-col-reverse lg:flex-row justify-between items-center">
 
-const Hero = () => {
-    const container = {
-        hidden: {opacity:0, y:14},
-        show:{
-            opacity: 1,
-            y:0,
-            transition: {duration: 0.55, ease: 'easeOut', when: 'beforeChildren', staggerChildren: 0.08}  
-        }
-    }; 
+        <div className="lg:w-1/2 text-center lg:text-left mt-8 lg:mt-0">
+       
+          <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 leading-tight">
+            Hi, I am
+          </h1>
+        
+          <h2 className="text-lg md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 leading-tight">
+            Ayushi Singh
+          </h2>
+         
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 text-[#8245ec] leading-tight">
+            <span className="text-white">I am a </span>
+            <Typewriter
+              options={{
+                strings: [
+                  'Fullstack Developer',
+                  'App Developer',
+                  'Coder',
+                ],
+                autoStart: true,
+                loop: true,
+                delay: 100,
+                deleteSpeed: 50,
+                cursor: '<span style="color: #8245ec;">|</span>',
+              }}
+            />
+          </h3>
 
-    const line = {
-        hidden : {opacity: 0, y: 10},
-        show: {
-            opacity:1,
-            y:0,
-            transition:{duration:0.45, ease:'easeOut'}
-        }
-    };
+          {/*Button */}
+          <a
+            href={resumePDF}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-white py-3 px-8 rounded-full mt-5 text-lg font-bold transition duration-300 transform hover:scale-105"
+            style={{
+              background: 'linear-gradient(90deg, #8245ec, #a855f7)',
+              boxShadow: '0 0 2px #8245ec, 0 0 2px #8245ec, 0 0 40px #8245ec',
+            }}
+          >
+            DOWNLOAD CV
+          </a>
 
-    return (
-        <section id="home"  className="scroll-mt-24 md:scroll-mt-28 hero-gradient min-h-[100svh]">
-            <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14 py-32 md:py-40 pb-10 md:pb-12 grid md:grid-cols-2 gap-12 items-center justify-items-center">
-                <motion.div variants={container} initial="hidden" animate="show">
-                    <div className='flex flex-col items-start gap-5 md:gap-7 max-w-[520px]'>
-                    <motion.div className="glass-card p-7 md:p-10 rounded-2xl shadow-xl" variants={line}>
-                        <p className="text-sm md:text-base text-gray-500 mb-2">Hello, I am </p>
-
-                        <h1 className='text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 flex items-center gap-3'>
-                            <motion.span
-                            aria-hidden
-                            initial={{rotate:0, y:0}}
-                            animate={{rotate:[0, 12, -6, 0], y:[0, -2, 0] }}
-                            transition={{duration: 1.6, repeat:Infinity, ease:'easeInOut'}}>
-                                👋
-                            </motion.span>
-                            Ayushi
-                        </h1>
-                    </motion.div>
-
-                    <motion.div className='inline-flex gap-4'>
-                        <a href='#contact' className='btn-primary' aria-label='Contact Ayushi'>Contact Me</a>
-                        <a href='#projects' className='btn-secondary' aria-label='View Projects'>View Projects</a>
-                    </motion.div></div>
-
-                </motion.div>
-                <div className='relative h-[min(80vh,800px)] w-full max-w-[800px] flex justify-center items-end'> {/*container with circle and character*/}
-                <motion.div 
-                initial={{opacity:0, scale:0.97, y:10}}
-                animate={{opacity:1, scale:1, y:0}}
-                transition={{duration:0.65, ease:'easeOut', delay: 0.05 }}
-                className='relative overflow-visible flex justify-center items-center'>
-                    <motion.div 
-                    className='absolute z-0 bottom-0 left-1/2 transform -translate-x-1/2 pointer-events-none' //circle wrapper
-                    animate={{scale:[1, 1.02, 1], y:[0, -4, 0]}}
-                    transition={{duration: 10, ease:'easeInOut', repeat:Infinity}}
-                    style={{willChange:'transform '}}>
-                        <div 
-                        className='hero-circle w-[48vw] md:w-[34vw] lg:w-[28vw] aspect-square rounded-full 
-                        bg-white/25 border border-white/30
-                        blur-[1px]'/> {/*actual circle(size) */}
-                    </motion.div> 
-                    <motion.img src={heroImg} alt='Ayushi Character Img' 
-                    className='relative z-10 w-[95%] md:w-[105%] lg:w-[115%] max-w-[720px] drop-shadow-xl' // character size 
-                    whileHover={{ y: -4}}
-                    transition={{type:'spring', stiffness:20, damping:18}} /></motion.div></div></div></section>
-    );
+        </div>
+        
+        <div className="md:w-1/2 flex justify-center md:justify-end">
+          <Tilt
+            className="w-48 h-48 sm:w-64 sm:h-64 md:w-[30rem] md:h-[30rem] border-4 border-purple-700 rounded-full"
+            tiltMaxAngleX={20}
+            tiltMaxAngleY={20}
+            perspective={1000}
+            scale={1.05}
+            transitionSpeed={1000}
+            gyroscope={true}
+          >
+            <img
+              src={profileImage}
+              alt="Ayushi Singh"
+              className="w-full h-full rounded-full object-cover drop-shadow-[0_10px_20px_rgba(130,69,236,0.5)]"
+            />
+          </Tilt>
+        </div>
+      </div>
+    </section>
+  );
 };
 
-export default Hero;
+export default About;

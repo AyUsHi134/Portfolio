@@ -23,6 +23,8 @@ import cppLogo from './assets/tech_logo/cpp.png';
 
 // experience section 
 import lpuLogo from './assets/lpu.png';
+import lpsLogo from './assets/lps.png';
+import carmelLogo from './assets/carmel.png';
 
 //services section 
 import frontendIcon from './assets/services_logo/frontend.png';
@@ -30,8 +32,8 @@ import backendIcon from './assets/services_logo/backend.png';
 import fullstackIcon from './assets/services_logo/fullstack.png';
 
 // projects section 
-import blogLogo from './assets/img-blog.png';
-import jobportalLogo from './assets/img-job.png';
+import blogLogo from './assets/img-blog.jpg';
+import jobportalLogo from './assets/img-job.jpg';
 
 
 export const SkillsInfo = [
@@ -101,7 +103,7 @@ export const SkillsInfo = [
     },
   ];
   
-  export const education = [
+  export const experience  = [
     {
       id: 0,
       img: lpuLogo, 
@@ -110,6 +112,24 @@ export const SkillsInfo = [
       grade: "5.41 CGPA",
       desc: "Currently pursuing my Bachelor's degree (B.Tech) in Computer Science and Engineering at Lovely Professional University. My journey at LPU has exposed me to diverse subjects including Operating Systems, Database Management Systems, Computer Networks, Web Development, and Data Structures. I have engaged in hands-on projects and technical events, gaining practical knowledge alongside theoretical learning.",
       degree: "Bachelor of Technology - B.Tech (CSE)",
+    },
+    {
+      id: 1,
+      img: lpsLogo, 
+      school: "Lucknow Public School",
+      date: "Apr 2018 - Mar 2020",
+      grade: "", 
+      desc: "Completed my Intermediate education with focus on Science stream including Physics, Chemistry, Mathematics, and Computer Science. This foundation prepared me well for pursuing engineering and helped develop my analytical and problem-solving skills.",
+      degree: "Intermediate (12th Grade) - Science Stream",
+    },
+    {
+      id: 2,
+      img: carmelLogo, 
+      school: "Mount Carmel College",
+      date: "Apr 2017 - Mar 2018",
+      grade: "", 
+      desc: "Completed my High School education with excellent performance across all subjects. Developed strong foundation in core subjects including Mathematics, Science, English, and Social Studies. Participated in various academic and extracurricular activities.",
+      degree: "High School (10th Grade)",
     }
   ];
 
@@ -119,22 +139,63 @@ export const SkillsInfo = [
       title: "Job Portal",
       description:
         "A MERN stack-based Job Portal that allows users to search, apply, and post jobs. It includes role-based authentication (admin, recruiter, job seeker), profile management, and application tracking features. Styled with SCSS for a clean and responsive design.",
-      image: jobportalLogo, 
+      image: jobportalLogo,
       tags: ["React JS", "Node.js", "Express", "MongoDB", "SCSS"],
       github: "https://github.com/yourusername/job-portal",
-      webapp: "https://jobportal-live-demo.netlify.app/", 
+      webapp: "https://jobportal-live-demo.netlify.app/",
     },
     {
       id: 1,
-      title: "Blog Website",
+      title: "Real-Time Dashboard",
       description:
-        "A full-stack Blog Website built with the MERN stack where users can create, edit, and manage blog posts. It features authentication, comments, and a responsive UI styled with Tailwind CSS for a modern look and feel.",
-      image: blogLogo,
-      tags: ["React JS", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-      github: "https://github.com/yourusername/blog-website",
-      webapp: "https://blogwebsite-live-demo.netlify.app/", 
+        "A Next.js + NestJS powered real-time analytics dashboard for visualizing live data (stock prices, IoT sensors, or user activity). Uses WebSockets for instant updates, PostgreSQL for storage, and Redis for caching. Charts and graphs built with Recharts and Tailwind CSS.",
+      image: dashboardLogo,
+      tags: ["Next.js", "NestJS", "PostgreSQL", "Redis", "Tailwind CSS"],
+      github: "https://github.com/yourusername/realtime-dashboard",
+      webapp: "https://realtime-dashboard-demo.vercel.app/",
+    },
+    {
+      id: 2,
+      title: "E-Commerce Store",
+      description:
+        "A modern full-stack e-commerce platform where users can browse products, add to cart, and checkout securely. Includes Stripe payment integration, product search with filters, and an admin panel for product management. Backend built with Django + DRF, frontend with React.",
+      image: ecommerceLogo,
+      tags: ["React JS", "Django", "Django REST Framework", "PostgreSQL", "Stripe"],
+      github: "https://github.com/yourusername/ecommerce-store",
+      webapp: "https://ecommerce-store-demo.netlify.app/",
+    },
+    {
+      id: 3,
+      title: "AI Content Generator",
+      description:
+        "An AI-powered web app that generates blog posts, social media captions, or product descriptions. Built with React on the frontend, FastAPI on the backend, and integrates with OpenAI API. Includes user authentication and history tracking of generated content.",
+      image: aiLogo,
+      tags: ["React JS", "FastAPI", "OpenAI API", "MongoDB", "Tailwind CSS"],
+      github: "https://github.com/yourusername/ai-content-generator",
+      webapp: "https://ai-generator-demo.vercel.app/",
+    },
+    {
+      id: 4,
+      title: "DevOps CI/CD Pipeline",
+      description:
+        "A project demonstrating DevOps skills by containerizing a Node.js app with Docker, deploying it on Kubernetes, and setting up CI/CD pipelines using GitHub Actions. Includes monitoring with Prometheus + Grafana and logs management with ELK stack.",
+      image: devopsLogo,
+      tags: ["Node.js", "Docker", "Kubernetes", "GitHub Actions", "Prometheus"],
+      github: "https://github.com/yourusername/devops-cicd",
+      webapp: "https://devops-cicd-demo.netlify.app/",
+    },
+    {
+      id: 5,
+      title: "Event Management System",
+      description:
+        "A full-stack web app for creating, managing, and registering for events. Includes role-based dashboards for organizers and attendees, real-time notifications, and ticket booking. Built with Vue.js frontend and Laravel backend for a different stack experience.",
+      image: eventLogo,
+      tags: ["Vue.js", "Laravel", "MySQL", "Tailwind CSS"],
+      github: "https://github.com/yourusername/event-management",
+      webapp: "https://event-management-demo.netlify.app/",
     },
   ];
+  
   
 
 
