@@ -1,0 +1,36 @@
+/*
+  Design tokens (Phase 7).
+  Tailwind v4 reads custom properties declared in `@theme` and auto-generates
+  matching utilities (e.g. --color-brand -> bg-brand/text-brand/border-brand,
+  --shadow-glow -> shadow-glow). Every value below is copied as-is from the
+  hardcoded literals already in use across the app, so adopting these utilities
+  changes nothing visually — it only gives the repeated/duplicated values one
+  shared source.
+*/
+@theme {
+  --color-brand: #8245ec;
+  --color-page: #050414;
+
+  --shadow-glow-sm: 0 0 20px 1px rgba(130, 69, 236, 0.3);
+  --shadow-glow: 0 0 30px rgba(130, 69, 236, 0.2);
+}
+
+/*
+  Plain custom properties (not @theme) for values that are still inconsistent
+  across sections rather than duplicated. These document the current variety
+  without generating new Tailwind utilities or being applied anywhere yet —
+  picking a single value per section is a layout decision for the upcoming
+  SectionWrapper work, not this token pass.
+
+  Section horizontal padding currently in use: px-[7vw], px-[12vw], px-[16vw], px-[20vw].
+  Max-width already rides on Tailwind's own scale (max-w-3xl/4xl/7xl) and
+  border-radius already rides on Tailwind's own scale (rounded-xl/2xl/3xl/full) —
+  neither needs a new custom token, only a future convention for which value
+  each component type should use.
+*/
+:root {
+  --section-px-narrow: 7vw;
+  --section-px-mid: 12vw;
+  --section-px-wide-a: 16vw;
+  --section-px-wide-b: 20vw;
+}

@@ -7,7 +7,7 @@ const toOut = (doc) => ({
     : []
 });
 
-const getAbout = async (req, res) => {
+const getAbout = async (req, res, next) => {
     try{
         let doc = await About.findOne();
         if(!doc) {
@@ -18,14 +18,25 @@ const getAbout = async (req, res) => {
         }
         return res.json(toOut(doc));
     } catch(error){
-        res.status(500).json({message:error.message});
+        next(error);
     }
 
 };
 
-const updateAbout = async (req,res) => {
+const updateAbout = async (req,res,next) => {
     try {
         const { heading, paragraph, description} = req.body;
+
+        if (
+            typeof heading !== "string" &&
+            !Array.isArray(paragraph) &&
+            typeof description !== "string"
+        ) {
+            const error = new Error("Provide at least one of: heading, paragraph, description");
+            error.statusCode = 400;
+            return next(error);
+        }
+
         let doc = await About.findOne();
         if(!doc) doc = new About();
 
@@ -38,9 +49,9 @@ const updateAbout = async (req,res) => {
         }
 
         await doc.save();
-        return res,json(toOut(doc));
+        return res.json(toOut(doc));
     } catch(error){
-        res.status(500).json({message:error.message});
+        next(error);
     }
 };
 
