@@ -5,7 +5,7 @@ import profileImage from '../../assets/Character.png';
 import resumePDF from '../../assets/resume.pdf';
 import SectionWrapper from '../../components/ui/SectionWrapper';
 
-const About = () => {
+const Hero = () => {
   return (
     <SectionWrapper
       id="home"
@@ -30,9 +30,9 @@ const About = () => {
             <Typewriter
               options={{
                 strings: [
-                  'Fullstack Developer',
-                  'App Developer',
-                  'Coder',
+                  'Software Engineer',
+                  'Full Stack Developer',
+                  'Backend Enthusiast',
                 ],
                 autoStart: true,
                 loop: true,
@@ -51,7 +51,7 @@ const About = () => {
             className="inline-block text-white py-3 px-8 rounded-full mt-5 text-lg font-bold transition duration-300 transform hover:scale-105"
             style={{
               background: 'linear-gradient(90deg, var(--color-brand), #a855f7)',
-              boxShadow: '0 0 2px var(--color-brand), 0 0 2px var(--color-brand), 0 0 40px var(--color-brand)',
+              boxShadow: '0 0 2px var(--color-brand), 0 0 40px var(--color-brand)',
             }}
           >
             DOWNLOAD CV
@@ -61,7 +61,7 @@ const About = () => {
 
         <div className="md:w-1/2 flex justify-center md:justify-end">
           <Tilt
-            className="w-48 h-48 sm:w-64 sm:h-64 md:w-[30rem] md:h-[30rem] border-4 border-purple-700 rounded-full"
+            className="w-48 sm:w-64 md:w-[30rem] aspect-square border-4 border-purple-700 rounded-full"
             tiltMaxAngleX={20}
             tiltMaxAngleY={20}
             perspective={1000}
@@ -81,4 +81,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Hero;
